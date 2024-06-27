@@ -28,6 +28,7 @@ public  class ET_global_Event_Request_Controller {
             Schema.SObjectType sObjectType = recordId.getSobjectType();
             String queryString = String.format('SELECT Id, Name FROM {0} WHERE Id =: recordId FOR VIEW', new List<Object>{sObjectType});
             Database.query(queryString);
+            
         }
     }
  
