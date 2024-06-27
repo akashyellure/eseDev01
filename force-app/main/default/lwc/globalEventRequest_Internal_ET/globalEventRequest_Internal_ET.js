@@ -3,7 +3,7 @@ import createCaseWithRequests  from '@salesforce/apex/ET_global_Event_Request_Co
 
 export default class GlobalEventRequest_Internal_ET extends LightningElement {
     	
-    accountId;
+    schoolaccountId;
     @track accountId = '';
     @track contactId = '';
     @track recordTypeId = '0123z000000OJ00AAG'; // Add the record type ID
@@ -87,7 +87,8 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
     }
     handleSelectedLookup(event) {
         const index = event.target.dataset.id;
-        this.accountId = event.detail;
+        alert('data'+index);
+        this.schoolaccountId = event.detail;
         console.log('index'+JSON.stringify(event.detail));
         this.eseRequestLines[index].School_Names__c = event.detail;
 
