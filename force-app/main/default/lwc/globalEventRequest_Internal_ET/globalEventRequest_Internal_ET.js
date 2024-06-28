@@ -11,7 +11,7 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
     @track typeOfCase='';
     @track recordTypeId = '0123z000000OJ00AAG'; // Add the record type ID
     @track eseRequestLines = [
-        {  // id:0,
+        { 
            number: 1,
             School_Names__c: '',
             Trip_Date__c: '',
@@ -39,7 +39,6 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
         this.eseRequestLines =
          [...this.eseRequestLines, 
             { 
-          // id: this.eseRequestLines.length, 
            number: this.eseRequestLines.length + 1, 
             School_Names__c: '', 
             Trip_Date__c: '',

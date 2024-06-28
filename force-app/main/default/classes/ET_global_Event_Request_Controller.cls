@@ -1,11 +1,15 @@
 public  class ET_global_Event_Request_Controller {
    @AuraEnabled
-    public static String createCaseWithRequests(String accountId, String contactId, String recordTypeId, List<ESE_Request_Line__c> eseRequestLines) {
+    public static String createCaseWithRequests(String accountId, String contactId, String recordTypeId, String typeOfCase, String status, String statusCategory, String subject, List<ESE_Request_Line__c> eseRequestLines) {
         try {
             Case newCase = new Case(
                 AccountId = accountId,
                 ContactId = contactId,
-                RecordTypeId = recordTypeId
+                RecordTypeId = recordTypeId,
+                Type_Of_Case__c = typeOfCase,
+                Status = status,
+                Status_Category__c = statusCategory,
+                Subject = subject
             );
             insert newCase;
            
