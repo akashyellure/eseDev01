@@ -4,10 +4,11 @@ import createCaseWithRequests  from '@salesforce/apex/ET_global_Event_Request_Co
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
  
 export default class GlobalEventRequest_Internal_ET extends LightningElement {
-    	
+    @track isLoading = false; // Track spinner visibility
     schoolaccountId;
     @track accountId = '';
     @track contactId = '';
+    @track typeOfCase='';
     @track recordTypeId = '0123z000000OJ00AAG'; // Add the record type ID
     @track eseRequestLines = [
         {  // id:0,
@@ -27,7 +28,6 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
             Assembly_Point__c: '',
             Landmark_Trip_To__c: '',
             Landmark_Trip_From__c: '',
-            Gender_AR__c: '',
             Gender__c: '',
             Leaving_time_from_Location__c: ''
         
@@ -56,7 +56,6 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
             Assembly_Point__c: '',
             Landmark_Trip_To__c: '',
             Landmark_Trip_From__c: '',
-            Gender_AR__c: '',
             Gender__c: '',
             Leaving_time_from_Location__c: ''
         }
@@ -83,7 +82,7 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
             this.accountId = '0013M00001QY8QsQAL';
             this.contactId = event.target.value;
         }else if(field ==='Type_Of_Case__c'){
-            this.Type_Of_Case__c=event.target.value;
+            this.typeOfCase=event.target.value;
         }
     }
 
@@ -105,14 +104,17 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
         const inputs = this.template.querySelectorAll('lightning-input');
         for (let input of inputs) {
             if (!input.reportValidity()) {
+                this.isLoading = false; 
                 allValid = false;
                 return allValid;
+
             }
         }
 
         for (let line of this.eseRequestLines) {
             for (let key in line) {
                 if (!line[key]) {
+                    this.isLoading = false; 
                     this.showToast('Error', `Field ${key} is required`, 'error');
                     allValid = false;
                     return allValid;
@@ -123,19 +125,34 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
         return allValid;
     }
     createCaseWithESERequestLines() {
+        this.isLoading = true; 
         if (this.validateFields()) {
+        const fields = this.template.querySelectorAll('lightning-input-field');
+        const fieldValues = {};
+        fields.forEach(field => {
+            fieldValues[field.fieldName] = field.value;
+        });
             createCaseWithRequests({
                 accountId: this.accountId,
                 contactId: this.contactId,
+                typeOfCase:this.typeOfCase,
                 recordTypeId: this.recordTypeId,
+                status: fieldValues.Status,
+                statusCategory: fieldValues.Status_Category__c,
+                subject: fieldValues.Subject,
                 eseRequestLines: this.eseRequestLines
             })
             .then(result => {
                 this.showToast('Success', 'Case and ESE Request Lines created successfully', 'success');
             })
             .catch(error => {
+                this.isLoading = false; 
                 this.handleErrors(error);
+                
                 console.error('Error creating Case and ESE Request Lines', error);
+            })
+            .finally(() => {
+                this.isLoading = false; // Hide spinner
             });
         } else {
             this.showToast('Error', 'Please fill all mandatory fields correctly', 'error');
@@ -154,6 +171,7 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
     handleErrors(error) {
         if (error.body) {
             if (error.body.message) {
+                this.isLoading = false; 
                 this.showToast('Error', error.body.message, 'error');
             } else if (error.body.fieldErrors) {
                 for (const field in error.body.fieldErrors) {
