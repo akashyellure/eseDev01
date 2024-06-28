@@ -1,1 +1,1 @@
-A,B,C,D,C,H,J,K,KL
+A,B,C,D,C,H,J,K
