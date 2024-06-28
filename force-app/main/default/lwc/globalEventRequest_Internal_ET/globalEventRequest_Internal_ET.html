@@ -3,11 +3,15 @@
         <div class="slds-form-element">
             <lightning-record-edit-form object-api-name="Case" onsuccess={handleSuccess} onerror={handleError}>
                 <lightning-layout>
+                  
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                            <lightning-input-field field-name="AccountId" onchange={handleInputChange} disabled="true"></lightning-input-field>
+                        </lightning-layout-item>
+                
+                  
                     <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
-                        <lightning-input-field field-name="AccountId" onchange={handleInputChange}></lightning-input-field>
-                    </lightning-layout-item>
-                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
-                        <lightning-input-field field-name="ContactId" onchange={handleInputChange}></lightning-input-field>
+                        <label for="fieldid">ESE User Name</label>
+                        <lightning-input-field  id="fieldid" variant="label-hidden" field-name="ContactId" lable="hidden" onchange={handleInputChange}></lightning-input-field>
                     </lightning-layout-item>
                 </lightning-layout>
                 <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer" role="grid">

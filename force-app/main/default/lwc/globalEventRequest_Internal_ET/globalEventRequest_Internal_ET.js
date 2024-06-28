@@ -73,8 +73,9 @@ export default class GlobalEventRequest_Internal_ET extends LightningElement {
     handleInputChange(event) {
         const field = event.target.fieldName;
         if (field === 'AccountId') {
-            this.accountId = event.target.value;
+          
         } else if (field === 'ContactId') {
+            this.accountId = '0013M00001QY8QsQAL';
             this.contactId = event.target.value;
         } 
     }
